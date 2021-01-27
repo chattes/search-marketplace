@@ -1,0 +1,12 @@
+az group create --location eastus --name souravpg --verbose
+az appservice plan create  --name ads-search --resource-group souravpg --location eastus --sku FREE --no-wait
+az webapp create --name ads-search-webapp --plan ads-search --resource-group souravpg
+az webapp show --name ads-search-webapp --resource-group souravpg --query defaultHostName
+az group delete --name souravpg
+
+# List Subscriptions
+
+az account list --output table
+
+# Creating a Service Principal User for AppService
+az ad sp create-for-rbac --name "ads-search-webapp" --role contributor --scopes  /subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Web/serverfarms/ads-search --sdk-auth
