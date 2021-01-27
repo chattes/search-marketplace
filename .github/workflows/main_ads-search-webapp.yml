@@ -31,6 +31,5 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'ads-search-webapp'
-        slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1bba951ec1cb42ef875acc75cd006189 }}
-        package: .
+        package: ./api
