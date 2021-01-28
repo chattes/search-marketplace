@@ -10,3 +10,4 @@ az account list --output table
 
 # Creating a Service Principal User for AppService
 az ad sp create-for-rbac --name "ads-search-webapp" --role contributor --scopes  /subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Web/serverfarms/ads-search --sdk-auth
+
