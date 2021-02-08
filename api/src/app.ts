@@ -1,10 +1,11 @@
+
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
-import { getAds } from "./services/controllers";
-import makeCallback from "./services/express-callback";
-import dotenv from "dotenv";
+import { getAds, saveQuery } from "./modules/marketplace/services/controllers";
+import makeCallback from "./modules/marketplace/services/express-callback";
 
-dotenv.config();
 
 let appInsights = require("applicationinsights");
 appInsights.setup().start();
@@ -16,8 +17,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Hello Kijiji Express Watcher");
 });
-app.get("/ads/search");
-app.use("/ads/search", makeCallback(getAds));
+app.get("/ads/search", makeCallback(getAds));
+app.post("/ads/search",makeCallback(saveQuery))
 app
   .listen(port, () => {
     client.trackEvent({ name: "Server has Started", properties: { port } });
