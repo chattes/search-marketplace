@@ -10,12 +10,10 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "joi": "^17.3.0"
+    "@azure/storage-blob": "^12.4.1"
   },
   "devDependencies": {
     "@azure/functions": "^1.2.3",
-    "@types/joi": "^17.2.3",
-    "@types/node": "^14.14.22",
     "typescript": "^3.3.3"
   }
 }

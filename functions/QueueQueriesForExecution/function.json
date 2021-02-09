@@ -1,0 +1,17 @@
+{
+  "bindings": [
+    {
+      "name": "myTimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 */59 * * * *"
+    },
+    {
+      "name": "$return",
+      "queueName": "process-queries",
+      "type": "queue",
+      "direction": "out"
+    }
+  ],
+  "scriptFile": "../dist/QueueQueriesForExecution/index.js"
+}
