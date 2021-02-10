@@ -46,6 +46,7 @@ var ValidationServices_1 = require("../../AdsSearch/ValidationServices");
 var AdsQuery_1 = require("../../AdsSearch/AdsQuery");
 var index_1 = require("../../utils/index");
 var Result_1 = require("../../../../shared/core/Result");
+var getUserByEmail_1 = require("../../../user/use-cases/getUserByEmail");
 var CreateAdsQueryUseCase = /** @class */ (function () {
     function CreateAdsQueryUseCase(adsRepo) {
         this.execute = this.execute.bind(this);
@@ -74,7 +75,7 @@ var CreateAdsQueryUseCase = /** @class */ (function () {
     };
     CreateAdsQueryUseCase.prototype.execute = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var AdQuery, saveResult, val;
+            var AdQuery, getUser, currentUser, saveResult, val;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -85,8 +86,17 @@ var CreateAdsQueryUseCase = /** @class */ (function () {
                         if (!AdQuery.isSuccess) {
                             return [2 /*return*/, Result_1.Result.fail(AdQuery.message)];
                         }
-                        return [4 /*yield*/, this._adsRepo.save(AdQuery.getValue())];
+                        getUser = new getUserByEmail_1.GetUserByEmailUseCase();
+                        return [4 /*yield*/, getUser.execute({
+                                email: "gooner.sourav@gmail.com",
+                            })];
                     case 1:
+                        currentUser = _a.sent();
+                        if (!currentUser.isSuccess) {
+                            return [2 /*return*/, currentUser];
+                        }
+                        return [4 /*yield*/, this._adsRepo.save(AdQuery.getValue(), currentUser.getValue())];
+                    case 2:
                         saveResult = _a.sent();
                         if (!saveResult) {
                             return [2 /*return*/, Result_1.Result.fail("Your Query was not saved!")];

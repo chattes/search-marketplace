@@ -46,6 +46,7 @@
     "kijiji-scraper": "^6.0.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "uuid-by-string": "^3.0.2",
     "valid-url": "^1.0.9"
   }
 }

@@ -49,7 +49,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AzureBlobAdsQueryRepo = void 0;
 var storage_blob_1 = require("@azure/storage-blob");
-var utils_1 = require("../../utils");
 var lodash_1 = require("lodash");
 var AzureBlobAdsQueryRepo = /** @class */ (function () {
     function AzureBlobAdsQueryRepo() {
@@ -66,17 +65,15 @@ var AzureBlobAdsQueryRepo = /** @class */ (function () {
         }
         return this.azureConnection;
     };
-    AzureBlobAdsQueryRepo.prototype.save = function (query) {
+    AzureBlobAdsQueryRepo.prototype.save = function (query, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var idGenerator, containerName, containerClient, blockBlobClient, data, blobData;
+            var containerName, containerClient, blockBlobClient, data, blobData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         console.log("Save the Query in Azure Blob Storage");
-                        idGenerator = new utils_1.IdGenerator();
-                        containerName = "" + idGenerator.generate("sourav");
-                        console.log(containerName);
-                        containerClient = this.blobClient.getContainerClient('sourav');
+                        containerName = "query-" + user.id;
+                        containerClient = this.blobClient.getContainerClient(containerName);
                         return [4 /*yield*/, containerClient.createIfNotExists()];
                     case 1:
                         _a.sent();

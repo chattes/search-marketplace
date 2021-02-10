@@ -1,11 +1,9 @@
 import { AdsQuery } from "../../AdsSearch/AdsQuery";
 import { IAdsQueryRepo } from "../AdsQuery";
 
-import {
-  BlobServiceClient,
-} from "@azure/storage-blob";
-import { IdGenerator } from "../../utils";
+import { BlobServiceClient } from "@azure/storage-blob";
 import { pickBy, identity } from "lodash";
+import { User } from "../../../user/domain/User";
 
 export class AzureBlobAdsQueryRepo implements IAdsQueryRepo {
   private static azureConnection: any;
@@ -25,13 +23,11 @@ export class AzureBlobAdsQueryRepo implements IAdsQueryRepo {
     }
     return this.azureConnection;
   }
-  async save(query: AdsQuery): Promise<boolean> {
+  async save(query: AdsQuery, user: User): Promise<boolean> {
     console.log("Save the Query in Azure Blob Storage");
-    const idGenerator = new IdGenerator();
     // TODO - Generate a container for each User
-    const containerName = `${idGenerator.generate("sourav")}`;
-    console.log(containerName)
-    const containerClient = this.blobClient.getContainerClient('sourav');
+    const containerName = `query-${user.id}`;
+    const containerClient = this.blobClient.getContainerClient(containerName);
 
     await containerClient.createIfNotExists();
     const blockBlobClient = containerClient.getBlockBlobClient(
@@ -46,9 +42,9 @@ export class AzureBlobAdsQueryRepo implements IAdsQueryRepo {
     data = pickBy(data, identity) as any;
     const blobData = JSON.stringify(data);
     await blockBlobClient.upload(blobData, blobData.length);
-    return true
+    return true;
   }
-  async getQueriesByUser(user: any) {
+  async getQueriesByUser(user: User) {
     return [];
   }
   async delete(query: AdsQuery): Promise<boolean> {

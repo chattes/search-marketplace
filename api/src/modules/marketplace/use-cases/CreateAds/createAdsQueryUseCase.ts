@@ -7,12 +7,13 @@ import { AdsQuery } from "../../AdsSearch/AdsQuery";
 import { IdGenerator } from "../../utils/index";
 import { Result } from "../../../../shared/core/Result";
 import { IAdsQueryRepo } from "../../repos/AdsQuery";
+import { GetUserByEmailUseCase } from "../../../user/use-cases/getUserByEmail";
 
 type Response = Result<any> | Result<void>;
 
 export class CreateAdsQueryUseCase
   implements UseCases<CreateAdsAueryDTO, Promise<Response>> {
-    private _adsRepo;
+  private _adsRepo;
   constructor(adsRepo: IAdsQueryRepo) {
     this.execute = this.execute.bind(this);
     this._adsRepo = adsRepo;
@@ -56,9 +57,20 @@ export class CreateAdsQueryUseCase
       return Result.fail(AdQuery.message);
     }
 
+    // TODO - we need a globale way/ JWT Token etc to get the Current User who is making request
+    const getUser = new GetUserByEmailUseCase();
+    const currentUser = await getUser.execute({
+      email: "gooner.sourav@gmail.com",
+    });
+    if (!currentUser.isSuccess) {
+      return currentUser;
+    }
 
-    const saveResult = await this._adsRepo.save(AdQuery.getValue())
-    if(!saveResult){
+    const saveResult = await this._adsRepo.save(
+      AdQuery.getValue(),
+      currentUser.getValue()
+    );
+    if (!saveResult) {
       return Result.fail("Your Query was not saved!");
     }
 
