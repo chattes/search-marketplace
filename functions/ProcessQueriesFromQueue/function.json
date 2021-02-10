@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "myQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "process-queries",
+      "connection": "AZURE_STORAGE_CONN_STRING"
+    },
+    {
+      "name": "$return",
+      "queueName": "process-results-raw",
+      "type": "queue",
+      "direction": "out",
+      "connection": "AZURE_STORAGE_CONN_STRING"
+    }
+  ],
+  "scriptFile": "../dist/ProcessQueriesFromQueue/index.js"
+}
