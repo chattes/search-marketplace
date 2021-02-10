@@ -31,7 +31,7 @@ const listQueries = async (context: Context): Promise<Array<Query>> => {
   );
   for await (const container of blobServiceClient.listContainers()) {
     context.log(`Continer Name ${container.name}`);
-    if (container.name !== "sourav") continue;
+    if (!container.name.startsWith("query")) continue;
     const containerClient = blobServiceClient.getContainerClient(
       container.name
     );
