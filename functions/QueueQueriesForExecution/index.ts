@@ -2,6 +2,7 @@ import { AzureFunction, Context } from "@azure/functions";
 import { BlobServiceClient } from "@azure/storage-blob";
 
 type Query = {
+  userId: string;
   id: string;
   location: string;
   queryString: string;
@@ -32,6 +33,8 @@ const listQueries = async (context: Context): Promise<Array<Query>> => {
   for await (const container of blobServiceClient.listContainers()) {
     context.log(`Continer Name ${container.name}`);
     if (!container.name.startsWith("query")) continue;
+    const queryIdentifier = 'query-'
+    const userId = container.name.substring(queryIdentifier.length)
     const containerClient = blobServiceClient.getContainerClient(
       container.name
     );
@@ -42,7 +45,10 @@ const listQueries = async (context: Context): Promise<Array<Query>> => {
       const data = (
         await streamToBuffer(blockBlobResponse.readableStreamBody)
       ).toString();
-      const query = JSON.parse(data) as Query;
+      const query = {
+        userId,
+        ...JSON.parse(data)
+      } as Query;
       queriesToExecute.push(query);
     }
     return queriesToExecute;

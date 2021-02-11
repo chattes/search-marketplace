@@ -30,6 +30,7 @@ type AdsResults = {
 
 type Query = {
   [paramName: string]: any;
+  userId: string;
   id: string;
   location: string;
   queryString: string;
@@ -50,6 +51,7 @@ type Result = {
   [paramName: string]: any;
 };
 type SearchResult = {
+  userId: string;
   id: string;
   query: string;
   maxPrice: number;
@@ -78,7 +80,9 @@ const queueTrigger: AzureFunction = async function (
     categoryId: kijijiQuery.category,
     q: kijijiQuery.query,
     maxPrice: kijijiQuery.maxPrice,
-    minPrice: Math.round(kijijiQuery.maxPrice - (20/100 * kijijiQuery.maxPrice))
+    minPrice: Math.round(
+      kijijiQuery.maxPrice - (20 / 100) * kijijiQuery.maxPrice
+    ),
   } as SearchParameters;
 
   const results = await search(params, options).catch((err) =>
@@ -92,6 +96,7 @@ const queueTrigger: AzureFunction = async function (
   );
   if (isEmpty(sanitizedResults)) return context.log("No results found");
   const searchResults: SearchResult = {
+    userId: myQueueItem.userId,
     id: myQueueItem.id,
     query: myQueueItem.queryString,
     maxPrice: myQueueItem.maxPrice,

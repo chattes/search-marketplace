@@ -43,3 +43,4 @@ Example of Output Queue
 ```
 
 [Settings](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-output?tabs=javascript#configuration)
+[Manually Trigger a function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-manually-run-non-http)
