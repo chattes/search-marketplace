@@ -31,7 +31,7 @@ export class AzureBlobAdsQueryRepo implements IAdsQueryRepo {
 
     await containerClient.createIfNotExists();
     const blockBlobClient = containerClient.getBlockBlobClient(
-      `${query.id}.json`
+      `queries/${query.id}.json`
     );
     let data = {
       id: query.id,
