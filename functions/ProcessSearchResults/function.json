@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "process-results-raw",
+      "connection": "AZURE_STORAGE_CONN_STRING"
+    }
+  ],
+  "scriptFile": "../dist/ProcessSearchResults/index.js"
+}
