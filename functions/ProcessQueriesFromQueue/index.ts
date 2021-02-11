@@ -77,7 +77,8 @@ const queueTrigger: AzureFunction = async function (
     locationId: kijijiQuery.location,
     categoryId: kijijiQuery.category,
     q: kijijiQuery.query,
-    maxPrice: kijijiQuery.maxResults,
+    maxPrice: kijijiQuery.maxPrice,
+    minPrice: Math.round(kijijiQuery.maxPrice - (20/100 * kijijiQuery.maxPrice))
   } as SearchParameters;
 
   const results = await search(params, options).catch((err) =>
