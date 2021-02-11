@@ -29,7 +29,7 @@ const queueTrigger: AzureFunction = async function (
     `query-${myQueueItem.userId}`
   );
 
-  const blobClient = container.getBlockBlobClient(`results-${myQueueItem.id}.json`);
+  const blobClient = container.getBlockBlobClient(`results/${myQueueItem.id}.json`);
 
   async function* getResults() {
     yield JSON.stringify(myQueueItem);

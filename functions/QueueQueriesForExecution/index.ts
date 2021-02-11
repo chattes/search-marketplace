@@ -40,7 +40,9 @@ const listQueries = async (context: Context): Promise<Array<Query>> => {
     );
     const queriesToExecute = [];
     for await (const blob of containerClient.listBlobsFlat()) {
+      if(!blob.name.startsWith('queries')) continue
       const blobClient = containerClient.getBlobClient(blob.name);
+
       const blockBlobResponse = await blobClient.download();
       const data = (
         await streamToBuffer(blockBlobResponse.readableStreamBody)
