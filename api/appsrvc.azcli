@@ -12,3 +12,24 @@ az account list --output table
 az ad sp create-for-rbac --name "ads-search-webapp" --role contributor --scopes  /subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Web/serverfarms/ads-search --sdk-auth
 
 az storage account show-connection-string --resource-group souravpg --name adsstgaccnt --query "connectionString"
+
+# Event Grid Integration with webhook
+
+# Get the Resource ID of Blob Storage
+
+az storage account show --name adsstgaccnt --resource-group souravpg --query id --output tsv
+
+
+az provider register --namespace Microsoft.EventGrid
+az provider show --namespace Microsoft.EventGrid --query "registrationState"
+
+# Received Error for Storage Account
+
+az eventgrid event-subscription create --source-resource-id "/subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Storage/storageAccounts/adsstgaccnt" --name results-in-storage --endpoint https://7ce490cfc94a.ngrok.io/ads/search/result --endpoint-type webhook --included-event-types "Microsoft.Storage.BlobCreated"
+# https://aka.ms/storageevents
+# Thank you for pointing out to use storage account v2. az cli storage account create command will create a v1 general purpose account by default unless specified. Changing to general-purpose v2 storage account fixed the issue.
+# Changing the storage account version
+az storage account update -g souravpg --name adsstgaccnt --set kind=StorageV2 --access-tier Hot
+
+az eventgrid event-subscription delete --source-resource-id "/subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Storage/storageAccounts/adsstgaccnt" --name results-in-storage
+
