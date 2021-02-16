@@ -20,6 +20,18 @@ app.get("/", function (req, res) {
 });
 app.get("/ads/search", express_callback_1.default(controllers_1.getAds));
 app.post("/ads/search", express_callback_1.default(controllers_1.saveQuery));
+// app.post("/ads/search/result", (req, res) => {
+//   req.body.forEach((element: any) => {
+//     if (element.eventType === "Microsoft.EventGrid.SubscriptionValidationEvent"){
+//       console.log("Validation Handshake!!!")
+//       return res.send({ validationResponse: element.data.validationCode });
+//     }
+//     if(element.eventType === "Microsoft.Storage.BlobCreated"){
+//       return console.log("Blob Created Event Received", req.body[0])
+//     }
+//     console.log("Some other Event Received", req.body.eventType)
+//   });
+// });
 app
     .listen(port, function () {
     client.trackEvent({ name: "Server has Started", properties: { port: port } });

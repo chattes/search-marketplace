@@ -77,7 +77,7 @@ var AzureBlobAdsQueryRepo = /** @class */ (function () {
                         return [4 /*yield*/, containerClient.createIfNotExists()];
                     case 1:
                         _a.sent();
-                        blockBlobClient = containerClient.getBlockBlobClient(query.id + ".json");
+                        blockBlobClient = containerClient.getBlockBlobClient("queries/" + query.id + ".json");
                         data = __assign({ id: query.id, location: query.location, queryString: query.query }, query.filters);
                         data = lodash_1.pickBy(data, lodash_1.identity);
                         blobData = JSON.stringify(data);
