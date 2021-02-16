@@ -12,10 +12,27 @@ const eventGridTrigger: AzureFunction = async function (context: Context, eventG
 
     const blkBlobClient = new BlockBlobClient(eventGridEvent.data.url, sharedKey)
     const success = await blkBlobClient.exists().catch(err => context.log(err))
-    if(success) context.log("We are able to read the Blob")
+    if(success){
+        const blockBlobResponse = await blkBlobClient.download()
+        const data = (await streamToBuffer(blockBlobResponse.readableStreamBody))
+        context.log(data)
+    }
 
     
     context.done(); 
 };
+
+async function streamToBuffer(readableStream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    readableStream.on("data", (data) => {
+      chunks.push(data instanceof Buffer ? data : Buffer.from(data));
+    });
+    readableStream.on("end", () => {
+      resolve(Buffer.concat(chunks));
+    });
+    readableStream.on("error", reject);
+  });
+}
 
 export default eventGridTrigger;
