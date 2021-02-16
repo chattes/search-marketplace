@@ -25,7 +25,7 @@ az provider show --namespace Microsoft.EventGrid --query "registrationState"
 
 # Received Error for Storage Account
 
-az eventgrid event-subscription create --source-resource-id "/subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Storage/storageAccounts/adsstgaccnt" --name results-in-storage --endpoint https://7ce490cfc94a.ngrok.io/ads/search/result --endpoint-type webhook --included-event-types "Microsoft.Storage.BlobCreated"
+az eventgrid event-subscription create --source-resource-id "/subscriptions/d388a90b-07aa-4caf-abee-03a8e69e32e2/resourceGroups/souravpg/providers/Microsoft.Storage/storageAccounts/adsstgaccnt" --name results-in-storage --endpoint https://adsfunctions.azurewebsites.net/runtime/webhooks/eventgrid?functionName=SendAlertsSearchResults&code=dxmd/kNa94TtPriaeIpN7xcUz8qD1iN/XRQgw2MOlysWr2mgcQhw0g== --endpoint-type webhook --included-event-types "Microsoft.Storage.BlobCreated"
 # https://aka.ms/storageevents
 # Thank you for pointing out to use storage account v2. az cli storage account create command will create a v1 general purpose account by default unless specified. Changing to general-purpose v2 storage account fixed the issue.
 # Changing the storage account version
