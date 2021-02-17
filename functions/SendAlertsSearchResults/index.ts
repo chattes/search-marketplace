@@ -14,8 +14,9 @@ const eventGridTrigger: AzureFunction = async function (context: Context, eventG
     const success = await blkBlobClient.exists().catch(err => context.log(err))
     if(success){
         const blockBlobResponse = await blkBlobClient.download()
-        const data = (await streamToBuffer(blockBlobResponse.readableStreamBody))
-        context.log(data)
+        const data = (await streamToBuffer(blockBlobResponse.readableStreamBody)).toString()
+        const results = JSON.parse(data)
+        context.log(results)
     }
 
     
